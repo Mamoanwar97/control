@@ -45,7 +45,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\</OutputDirectory>
-          <OutputName>Subsystem</OutputName>
+          <OutputName>gamed</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -405,6 +405,11 @@
         <Group>
           <GroupName>Source Group 1</GroupName>
           <Files>
+            <File>
+              <FileName>startup_TM4C123.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\startup_TM4C123.s</FilePath>
+            </File>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>

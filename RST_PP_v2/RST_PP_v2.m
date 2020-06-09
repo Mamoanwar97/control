@@ -1024,18 +1024,5 @@ block_R=add_block('simulink/Discrete/Discrete Filter', [name '/R(z)'], 'position
   x=x-195;
   add_line(name, 'R(z)/1)', 'Sum1/2');
   
-  blocks = find_system(name, 'SearchDepth', 1);
-  bh = [];
-  
-  for i = 3:length(blocks)
-    bh = [bh get_param(blocks{i}, 'handle')];
-  end
-  
-  fileID = fopen('control.h','a');
-  fprintf(fileID,'Bh = [');
-  fprintf(fileID, num2str(bh));
-  fprintf(fileID,'] \n');
-  fclose(fileID);
-
 open_system(sys);
 %clear;
