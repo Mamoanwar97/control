@@ -5,7 +5,7 @@
  *
  * Model version                  : 1.0
  * Simulink Coder version         : 8.10 (R2016a) 10-Feb-2016
- * C/C++ source code generated on : Tue Jun 09 12:05:37 2020
+ * C/C++ source code generated on : Tue Jun 09 16:55:19 2020
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: NXP->Cortex-M4
@@ -33,7 +33,7 @@ RT_MODEL *const rtM = &rtM_;
 /* Model step function */
 void Subsystem_step(void)
 {
-  real_T rtb_Sum1;
+  real_T uSz_tmp;
 
   /* DiscreteFilter: '<S1>/1//S(z)' incorporates:
    *  DiscreteFilter: '<S1>/R(z)'
@@ -42,15 +42,15 @@ void Subsystem_step(void)
    *  Inport: '<Root>/In2'
    *  Sum: '<S1>/Sum1'
    */
-  rtb_Sum1 = (((((0.58824 * rtU.In1 + -0.80835 * rtDW.Tz_states[0]) + 0.28632 *
-                 rtDW.Tz_states[1]) - ((0.5744 * rtU.In2 + -0.78842 *
-    rtDW.Rz_states[0]) + 0.28024 * rtDW.Rz_states[1])) - -0.33945 *
-               rtDW.uSz_states[0]) - -0.13345 * rtDW.uSz_states[1]) / 0.47289;
+  uSz_tmp = ((((3.3333 * rtU.In1 + -4.5807 * rtDW.Tz_states[0]) + 1.6225 *
+               rtDW.Tz_states[1]) - ((3.0 * rtU.In2 + -3.939 * rtDW.Rz_states[0])
+    + 1.3142 * rtDW.Rz_states[1])) - -0.3742 * rtDW.uSz_states[0]) - -0.6258 *
+    rtDW.uSz_states[1];
 
   /* Outport: '<Root>/Out1' incorporates:
    *  DiscreteFilter: '<S1>/1//S(z)'
    */
-  rtY.Out1 = rtb_Sum1;
+  rtY.Out1 = uSz_tmp;
 
   /* Update for DiscreteFilter: '<S1>/T(z)' incorporates:
    *  Inport: '<Root>/In1'
@@ -66,7 +66,7 @@ void Subsystem_step(void)
 
   /* Update for DiscreteFilter: '<S1>/1//S(z)' */
   rtDW.uSz_states[1] = rtDW.uSz_states[0];
-  rtDW.uSz_states[0] = rtb_Sum1;
+  rtDW.uSz_states[0] = uSz_tmp;
 }
 
 /* Model initialize function */

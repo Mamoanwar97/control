@@ -2,7 +2,7 @@
 ## Makefile generated for Simulink model 'Subsystem'. 
 ## 
 ## Makefile     : Subsystem.mk
-## Generated on : Tue Jun 09 12:05:52 2020
+## Generated on : Tue Jun 09 16:55:34 2020
 ## MATLAB Coder version: 3.1 (R2016a)
 ## 
 ## Build Info:
@@ -33,7 +33,7 @@ MATLAB_ROOT               = C:\PROGRA~1\MATLAB\R2016a
 MATLAB_BIN                = C:\PROGRA~1\MATLAB\R2016a\bin
 MATLAB_ARCH_BIN           = C:\PROGRA~1\MATLAB\R2016a\bin\win64
 MASTER_ANCHOR_DIR         = 
-START_DIR                 = D:\Tracks\Control\RST_PP_v2
+START_DIR                 = D:\Tracks\Control\RST_PP~1.FIG\RST_PP~1.FIG\RST_PP~1.FIG
 ARCH                      = win64
 SOLVER                    = 
 SOLVER_OBJ                = 

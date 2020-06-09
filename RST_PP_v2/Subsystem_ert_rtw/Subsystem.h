@@ -5,7 +5,7 @@
  *
  * Model version                  : 1.0
  * Simulink Coder version         : 8.10 (R2016a) 10-Feb-2016
- * C/C++ source code generated on : Tue Jun 09 12:05:37 2020
+ * C/C++ source code generated on : Tue Jun 09 16:55:19 2020
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: NXP->Cortex-M4
@@ -85,13 +85,13 @@ extern RT_MODEL *const rtM;
  * MATLAB hilite_system command to trace the generated code back
  * to the parent model.  For example,
  *
- * hilite_system('System_20200609_1158_05/Subsystem')    - opens subsystem System_20200609_1158_05/Subsystem
- * hilite_system('System_20200609_1158_05/Subsystem/Kp') - opens and selects block Kp
+ * hilite_system('System_20200609_1652_60/Subsystem')    - opens subsystem System_20200609_1652_60/Subsystem
+ * hilite_system('System_20200609_1652_60/Subsystem/Kp') - opens and selects block Kp
  *
  * Here is the system hierarchy for this model
  *
- * '<Root>' : 'System_20200609_1158_05'
- * '<S1>'   : 'System_20200609_1158_05/Subsystem'
+ * '<Root>' : 'System_20200609_1652_60'
+ * '<S1>'   : 'System_20200609_1652_60/Subsystem'
  */
 #endif                                 /* RTW_HEADER_Subsystem_h_ */
 

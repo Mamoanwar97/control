@@ -603,8 +603,8 @@ R=str2num(get(handles.edit17, 'string'));%full R S T values
 S=str2num(get(handles.edit18, 'string'));
 T=str2num(get(handles.edit19, 'string'));
 
-R=conv(R, Hr);
-S=conv(S, Hs);
+
+
 simulate_RST(Ts, Bp, Ap, R, S, T, Bm, Am, dist, handles);
 
 
@@ -791,6 +791,10 @@ function pushbutton1_Callback(hObject, eventdata, handles)%update plant only
 % handles    structure with handles and user data (see GUIDATA)
 [Ts Bp Ap Hr Hs dist P Bm Am]=acquire_data(handles);
 
+R=str2num(get(handles.edit17, 'string'));%full R S T values
+S=str2num(get(handles.edit18, 'string'));
+T=str2num(get(handles.edit19, 'string'));
+
 fileID = fopen('control.h','w');
 fprintf(fileID,'Bp = [');
 fprintf(fileID, num2str(Bp));
@@ -800,12 +804,6 @@ fprintf(fileID, num2str(Ap));
 fprintf(fileID,'] \n');
 fclose(fileID);
 
-R=str2num(get(handles.edit17, 'string'));%full R S T values
-S=str2num(get(handles.edit18, 'string'));
-T=str2num(get(handles.edit19, 'string'));
-
-R=conv(R, Hr);
-S=conv(S, Hs);
 simulate_RST(Ts, Bp, Ap, R, S, T, Bm, Am, dist, handles);
 
 
@@ -861,10 +859,12 @@ if S_has_integrator
 end
 S=conv(S, Bps);
 T=P/sum(Bpu);%(no zeros cancelled)
-set(handles.edit17, 'string',['[' num2str(R) ']']);%full R S T values for Update plant & Simulink buttons
+
+R=conv(R, Hr);
+S=conv(S, Hs);
+set(handles.edit17, 'string',['[' num2str(R) ']']);
 set(handles.edit18, 'string',['[' num2str(S) ']']);
 set(handles.edit19, 'string',['[' num2str(T) ']']);
-
 
 fileID = fopen('RST.h','w');
 fprintf(fileID, '#ifndef _RST_H_\n');
@@ -903,10 +903,8 @@ end
 fprintf(fileID2, '};\n');
 fclose(fileID2);
 
-R=conv(R, Hr);
-S=conv(S, Hs);
-
 simulate_RST(Ts, Bp, Ap, R, S, T, Bm, Am, dist, handles);
+
 
 % --- Executes on button press in pushbutton3.
 function pushbutton3_Callback(hObject, eventdata, handles)%generate Simulink model
@@ -952,18 +950,13 @@ add_block('simulink/Math Operations/Sum', [name '/Sum1'], 'position',[x, y+5, x+
 x=x+20;%sum width
 add_line(name, 'T(z)/1', 'Sum1/1');
 
-x=x+20;%spacing
-add_block('simulink/Discrete/Discrete Filter', [name '/1//Hs(z)'], 'position',[x, y, x+195, y+30],...
-    'numerator','[1]', 'denominator',['[' num2str(Hs) ']'], 'sampletime',str_Ts);
-x=x+195;%Hs width
-add_line(name, 'Sum1/1', '1//Hs(z)/1');
 
 x=x+35;%spacing
 add_block('simulink/Discrete/Discrete Filter', [name '/1//S(z)'], 'position',[x, y, x+195, y+30],...
     'numerator','[1]', 'denominator',['[' num2str(S) ']'], 'sampletime',str_Ts);
 x=x+195;%S width
-add_line(name, '1//Hs(z)/1', '1//S(z)/1');
-%add_line(name, 'Sum1/1', '1//S(z)/1');
+
+add_line(name, 'Sum1/1', '1//S(z)/1');
 
 x=x+330;%make space for possible continuous plant
 add_block('simulink/Math Operations/Sum', [name '/Sum2'], 'position',[x, y+5, x+20, y+5+20],...
@@ -1024,16 +1017,25 @@ add_line(name, 'Mux/1', 'Scope/1');
 x=x-465; y=y+110;%from scope left edge to R
 block_R=add_block('simulink/Discrete/Discrete Filter', [name '/R(z)'], 'position',[x, y, x+195, y+30],...
     'numerator',['[' num2str(R) ']'], 'denominator','[1]', 'sampletime',str_Ts, 'orientation','left');
-%all=get(get_param(block_R, 'handle'))
-x=x-195;%R width
-add_line(name, 'Sum2/1', 'R(z)/1');
+    %all=get(get_param(block_R, 'handle'))
+    x=x-195;%R width
+    add_line(name, 'Sum2/1', 'R(z)/1');
 
-x=x-35;%spacing
-add_block('simulink/Discrete/Discrete Filter', [name '/Hr(z)'], 'position',[x, y, x+195, y+30],...
-    'numerator',['[' num2str(Hr) ']'], 'denominator','[1]', 'sampletime',str_Ts, 'orientation','left');
-x=x-195;
-add_line(name, 'R(z)/1', 'Hr(z)/1');
-add_line(name, 'Hr(z)/1)', 'Sum1/2');
-%add_line(name, 'R(z)/1)', 'Sum1/2');
+  x=x-195;
+  add_line(name, 'R(z)/1)', 'Sum1/2');
+  
+  blocks = find_system(name, 'SearchDepth', 1);
+  bh = [];
+  
+  for i = 3:length(blocks)
+    bh = [bh get_param(blocks{i}, 'handle')];
+  end
+  
+  fileID = fopen('control.h','a');
+  fprintf(fileID,'Bh = [');
+  fprintf(fileID, num2str(bh));
+  fprintf(fileID,'] \n');
+  fclose(fileID);
+
 open_system(sys);
 %clear;
